@@ -39,7 +39,6 @@ public class ChatServer {
 
         public void run() {
             try {
-                // 1) Recebe e registra username
                 username = in.readUTF().trim();
                 if (username.isEmpty() || clients.containsKey(username)) {
                     out.writeUTF("ERROR");
@@ -51,7 +50,6 @@ public class ChatServer {
                 clients.put(username, this);
                 logConnection();
 
-                // 2) Loop principal de comandos
                 while (true) {
                     String cmd = in.readUTF();
                     switch (cmd) {
@@ -74,7 +72,7 @@ public class ChatServer {
                     }
                 }
             } catch (IOException e) {
-                // cliente desconectou abruptamente
+
             } finally {
                 cleanup();
             }
@@ -110,12 +108,12 @@ public class ChatServer {
             byte[] buffer = new byte[4096];
 
             if (target != null) {
-                // envia cabeçalho de arquivo
+
                 target.out.writeUTF("FILE");
                 target.out.writeUTF(username);
                 target.out.writeUTF(fileName);
                 target.out.writeLong(length);
-                // retransmite conteúdo em blocos
+
                 long remaining = length;
                 while (remaining > 0) {
                     int read = in.read(buffer, 0, (int)Math.min(buffer.length, remaining));

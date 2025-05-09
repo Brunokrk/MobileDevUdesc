@@ -14,14 +14,11 @@ public class ChatClient {
             in  = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
 
-            // envia nome de usuário
             out.writeUTF(username);
             out.flush();
 
-            // thread que escuta todo retorno do servidor
             new Thread(this::listen).start();
 
-            // loop de leitura de comandos do usuário
             Scanner scanner = new Scanner(System.in);
             while (true) {
                 String line = scanner.nextLine();
